@@ -8,11 +8,24 @@ WHEELS = {"LR": 7,
         "RR": 13,
         "RF": 15}
 
-def init()
+def init():
     gpio.setmode(gpio.BOARD)
     for WHEEL in WHEELS:
         gpio.setup(WHEELS[WHEEL], gpio.OUT)
         gpio.output(WHEELS[WHEEL], gpio.LOW)
+
+def forward(t):
+    pass
+def reverse(t):
+    pass
+def turn_left(t):
+    pass
+def turn_right(t):
+    pass
+def pivot_left(t):
+    pass
+def pivot_right(t):
+    pass
 
 def key_input(event):
     init()
