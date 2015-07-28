@@ -16,9 +16,27 @@ def init():
 
 def drive(controlId, value):
     print "Control id = {}, Value = {}".format(controlId, value)
-
+    
+def monitor():
+    command = ""
+    if xboxCont.controlValues[1] < -0.1:
+        command += "FORWARD, "
+    if xboxCont.controlValues[1] > 0.1:
+        command += "BACKWARD, "
+    if xboxCont.controlValues[0] < -0.1:
+        command += "LEFT, "
+    if xboxCont.controlValues[0] > 0.1:
+        command += "RIGHT, "
+    if xboxCont.controlValues[12] == 1:
+        print "STOPPING"
+        xboxCont.stop()
+        gpio.cleanup
+        return False
+    print command
+    return True
+    
 xboxCont = XboxController.XboxController(
-    controllerCallBack = drive,
+    controllerCallBack = None,
     joystickNo = 0,
     deadzone = 0.1,
     scale = 1,
@@ -26,6 +44,6 @@ xboxCont = XboxController.XboxController(
 
 init()
 xboxCont.start()
-time.sleep(15)
-gpio.cleanup()
-xboxCont.stop()
+run = True
+while run == True:
+    run = monitor()
