@@ -25,13 +25,13 @@ class Robot:
             gpio.setup(self.drive_map[pin], gpio.OUT)
             self.motor[pin] = 0
             self.drive[pin] = gpio.PWM(self.drive_map[pin],pwm_freq)
-            self.drive[pin].start(motor[pin])
+            self.drive[pin].start(self.motor[pin])
 
     def __repr__(self):
-        rep = "Robot("
-        rep += "Drive Map: " + str(self.drive_map) + ","
-        rep += "Sensor Map: " + str(self.sensor_map) + ","
-        rep += "Servo Map: " + str(self.servo_map) + ")"
+        rep = "Robot: " + "\n"
+        rep += "Drive Map: " + str(self.drive_map) + "\n"
+        rep += "Sensor Map: " + str(self.sensor_map) + "\n"
+        rep += "Servo Map: " + str(self.servo_map) + "\n"
         return rep
 
     def halt(self):
@@ -39,6 +39,16 @@ class Robot:
             self.drive[item].stop()
         gpio.cleanup()
 
+    def update_motors(self, command):
+        for item in command:
+            self.motor[item[0]] = item[1]
+            self.drive[item[0]].ChangeDutyCycle(item[1])
+
+    def update_servos(self, command):
+        pass
+
+    def update_sensors(self, command):
+        pass
     
 ## Initiate Bogie Rover        
 Bogie = Robot({"LR":7, "LF":11, "RR":13, "RF":15}, {}, {})   
@@ -57,13 +67,13 @@ control.start()
 try:
     while True:
         for i in range(0,101):
-            Bogie.drive["LF"].ChangeDutyCycle(i)
-            Bogie.drive["RR"].ChangeDutyCycle(i)
-            time.sleep(0.02)
+            Bogie.update_motors([["LF",i],["RR",i]])
+            print Bogie.motor
+            time.sleep(0.005)
         for i in range(0,101):
-            Bogie.drive["LF"].ChangeDutyCycle(100 - i)
-            Bogie.drive["RR"].ChangeDutyCycle(100 - i)
-            time.sleep(0.02)
+            Bogie.update_motors([["LF",100 - i],["RR",100 - i]])
+            print Bogie.motor
+            time.sleep(0.005)
             
 except KeyboardInterrupt:
     for item in Bogie.drive:
