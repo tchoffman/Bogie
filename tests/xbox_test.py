@@ -4,10 +4,7 @@ import math
 import RPi.GPIO as gpio
 
 
-WHEELS = {"LR": 7,
-        "LF": 11,
-        "RR": 13,
-        "RF": 15}
+WHEELS = {"LR": 7, "LF": 11, "RR": 13, "RF": 15}
 
 def init():
     gpio.setmode(gpio.BOARD)
