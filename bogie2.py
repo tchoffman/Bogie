@@ -47,7 +47,7 @@ class Robot:
     def update_servos(self, command):
         pass
 
-    def update_sensors(self, command):
+    def read_sensors(self, command):
         pass
     
 ## Initiate Bogie Rover        
