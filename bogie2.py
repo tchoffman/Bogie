@@ -46,14 +46,13 @@ try:
     while True:
         for i in range(0,101):
             Bogie.drive["LF"].ChangeDutyCycle(i)
-            Bogie.drive["RF"].ChangeDutyCycle(i)
-            if i % 10 == 0:
-                print i, gpio.PWM(11)
+            Bogie.drive["RR"].ChangeDutyCycle(i)
             time.sleep(0.02)
         for i in range(0,101):
             Bogie.drive["LF"].ChangeDutyCycle(100 - i)
-            Bogie.drive["RF"].ChangeDutyCycle(100 - i)
+            Bogie.drive["RR"].ChangeDutyCycle(100 - i)
             time.sleep(0.02)
+            
 except KeyboardInterrupt:
     for item in Bogie.drive:
         Bogie.drive[item].stop()
