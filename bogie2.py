@@ -39,11 +39,26 @@ class Robot:
             self.drive[item].stop()
         gpio.cleanup()
 
-    def update_motors(self, command):
-        for item in command:
-            self.motor[item[0]] = item[1]
-            self.drive[item[0]].ChangeDutyCycle(item[1])
+    def update_drives(self, throttle, direction):
+        throttle = -(throttle)
+        left_drive = throttle + direction
+        right_drive = throttle - direction
+        if left_drive >= 0:
+            self.motor["LF"] = min(left_drive,1)*100
+            self.motor["LR"] = 0
+        else:
+            self.motor["LF"] = 0
+            self.motor["LR"] = min(abs(left_drive), 1)*100
+        if right_drive >= 0:
+            self.motor["RF"] = min(right_drive,1)*100
+            self.motor["RR"] = 0
+        else:
+            self.motor["RF"] = 0
+            self.motor["RR"] = min(abs(right_drive),1)*100
 
+        for item in self.drive:
+            self.drive[item].ChangeDutyCycle(self.motor[item])
+            
     def update_servos(self, command):
         pass
 
@@ -66,16 +81,10 @@ control.start()
 
 try:
     while True:
-        for i in range(0,101):
-            Bogie.update_motors([["LF",i],["RR",i]])
-            print Bogie.motor
-            time.sleep(0.005)
-        for i in range(0,101):
-            Bogie.update_motors([["LF",100 - i],["RR",100 - i]])
-            print Bogie.motor
-            time.sleep(0.005)
-            
+        Bogie.update_drives(control.controlValues[1],control.controlValues[0])
+        
+except control.controlValues[12] == 1:
+    Bogie.halt()
+    
 except KeyboardInterrupt:
-    for item in Bogie.drive:
-        Bogie.drive[item].stop()
-    gpio.cleanup()
+    Bogie.halt()
