@@ -65,8 +65,11 @@ class Robot:
     def read_sensors(self, command):
         pass
     
-## Initiate Bogie Rover        
-Bogie = Robot({"LR":7, "LF":11, "RR":13, "RF":15}, {}, {})   
+## Initiate Bogie Rover: Robot({DRIVE MAP},{SENSOR MAP},{SERVO MAP})        
+Bogie = Robot({"LR":1, "LF":2, "RR":4, "RF":3},                 # DRIVE MAP
+              {},                                               # SENSOR MAP
+              {"PIVOT":12, "REACH":13, "LIFT":14, "GRIP":15}    #SERVO MAP
+              )   
 print Bogie
 
 
@@ -81,8 +84,13 @@ control.start()
 
 try:
     while True:
-        Bogie.update_drives(control.controlValues[1],control.controlValues[0])
-        
+        Bogie.update_drives(control.controlValues.LTHUMBY,      # Throttle
+                            control.controlValues.LTHUMBX)      # Direction
+        Bogie.update_servos(control.controlValues.RTHUMBX,      # Pivot
+                            control.controlValues.RTHUMBY,      # Reach
+                            control.controlValues.RTRIGGER,     # Lift / Dip
+                            control.controlValues.LTRIGGER)     # Grip / Claw
+
 except control.controlValues[12] == 1:
     Bogie.halt()
     
