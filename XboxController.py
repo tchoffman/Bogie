@@ -74,12 +74,12 @@ class XboxController(threading.Thread):
 
     #pygame axis constants for the analogue controls of the xbox controller
     class PyGameAxis():
-        LTHUMBX = 0
-        LTHUMBY = 1
-        RTHUMBX = 2
-        RTHUMBY = 3
-        RTRIGGER = 4
-        LTRIGGER = 5
+        LTHUMBX = 0     #0
+        LTHUMBY = 1     #1
+        RTHUMBX = 3     #2
+        RTHUMBY = 4     #3
+        RTRIGGER = 2    #4
+        LTRIGGER = 5    #5
 
     #pygame constants for the buttons of the xbox controller
     class PyGameButtons():

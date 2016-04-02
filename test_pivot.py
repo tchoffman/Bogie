@@ -7,11 +7,9 @@ import time
 pwm = PWM(0x40)
 
 pwm.setPWMFreq(60)                        # Set frequency to 60 Hz
-
-##WRIST TEST
-for k in range(150,600):
-  print k
-  pwm.setPWM(2, 0, k)
-  time.sleep(.01)
-  
-
+## PIVOT TEST
+for i in range(0,800,25):
+  # Change speed of continuous servo on channel O
+  print i
+  pwm.setPWM(12, 0, i)
+  time.sleep(.5)

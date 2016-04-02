@@ -5,11 +5,10 @@ import time
 
 # Initialise the PWM device using the default address
 pwm = PWM(0x40)
-
 pwm.setPWMFreq(60)                        # Set frequency to 60 Hz
-##HIP TEST
-for i in range(150,600):
-  # Change speed of continuous servo on channel O
-  print i
-  pwm.setPWM(0, 0, i)
-  time.sleep(.01)
+
+##REACH TEST
+for j in range(0,1000,25):
+  print j
+  pwm.setPWM(13, 0, j)
+  time.sleep(.5)

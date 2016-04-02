@@ -8,11 +8,14 @@ pwm = PWM(0x40)
 
 pwm.setPWMFreq(60)                        # Set frequency to 60 
 ##GRIP TEST
-for l in range(5):
-  print l
-  pwm.setPWM(3, 0, 150)
-  time.sleep(1)
-  pwm.setPWM(3, 0, 800)
-  time.sleep(1)
-  
+##for k in range(-1000,1000,25):
+##  print k
+##  pwm.setPWM(15, 0, abs(k))
+##  time.sleep(0.5)
 
+
+for i in range(10):
+  pwm.setPWM(15, 0, 350)
+  time.sleep(0.5)
+  pwm.setPWM(15, 0, 450)
+  time.sleep(0.5)
