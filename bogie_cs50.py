@@ -55,9 +55,10 @@ class Robot:
             self.pwm.setPWM(self.drive["RF"],0,0)
             self.pwm.setPWM(self.drive["RR"],0,int(min(abs(right_drive),1)*MAXPULSE))
             
-    def update_servos(self, pivot, reach, lift, grip):
+    def update_servos(self, pivot, reach, dip, lift, grip):
+        print "P: ", pivot, "  R: ", reach, " D/L: ", dip, "/", lift, " G: ", grip, "\n"
         ## Update Pivot
-        self.servo["PIVOT"]["POS"] -= int(pivot)
+        self.servo["PIVOT"]["POS"] -= int(pivot) * self.servo["PIVOT"]["MAG"]
         if self.servo["PIVOT"]["POS"] > self.servo["PIVOT"]["MAX"]:
             self.servo["PIVOT"]["POS"] = self.servo["PIVOT"]["MAX"]
         if self.servo["PIVOT"]["POS"] < self.servo["PIVOT"]["MIN"]:
@@ -65,7 +66,7 @@ class Robot:
         self.pwm.setPWM(self.servo["PIVOT"]["PIN"],0,self.servo["PIVOT"]["POS"])
 
         ## Update REACH
-        self.servo["REACH"]["POS"] -= int(reach)
+        self.servo["REACH"]["POS"] -= int(reach) * self.servo["REACH"]["MAG"]
         if self.servo["REACH"]["POS"] > self.servo["REACH"]["MAX"]:
             self.servo["REACH"]["POS"] = self.servo["REACH"]["MAX"]
         if self.servo["REACH"]["POS"] < self.servo["REACH"]["MIN"]:
@@ -73,12 +74,14 @@ class Robot:
         self.pwm.setPWM(self.servo["REACH"]["PIN"],0,self.servo["REACH"]["POS"])
 
         ## Update LIFT
-        self.servo["LIFT"]["POS"] = self.servo["LIFT"]["MIN"] + int(lift * (self.servo["LIFT"]["MAX"] - self.servo["LIFT"]["MIN"]) / 100)
+        self.servo["LIFT"]["POS"] += int((lift - dip) * 100) 
         self.pwm.setPWM(self.servo["LIFT"]["PIN"],0,self.servo["LIFT"]["POS"])
 
         ## Update GRIP
-        self.servo["GRIP"]["POS"] = self.servo["GRIP"]["MIN"] + int(lift * (self.servo["GRIP"]["MAX"] - self.servo["GRIP"]["MIN"]) / 100)
-        self.pwm.setPWM(self.servo["GRIP"]["PIN"],0,self.servo["GRIP"]["POS"])
+        if grip == 1:
+            self.pwm.setPWM(self.servo["GRIP"]["PIN"],0,self.servo["GRIP"]["MIN"])
+        if grip == 0:
+            self.pwm.setPWM(self.servo["GRIP"]["PIN"],0,self.servo["GRIP"]["MAX"])
 
     def read_sensors(self, command):
         pass
@@ -86,10 +89,10 @@ class Robot:
 ## Initiate Bogie Rover: Robot({DRIVE MAP},{SENSOR MAP},{SERVO MAP})        
 Bogie = Robot({"LR":0, "LF":1, "RR":3, "RF":2},                 # DRIVE MAP
               {},                                               # SENSOR MAP
-              {"PIVOT":{"PIN":12,"MIN":100,"POS":400,"MAX":700},
-               "REACH":{"PIN":13,"MIN":200,"POS":400,"MAX":600},
-               "LIFT":{"PIN":14,"MIN":200,"POS":450,"MAX":700},
-               "GRIP":{"PIN":15,"MIN":350,"POS":400,"MAX":450}}    #SERVO MAP
+              {"PIVOT":{"PIN":12,"MIN":100,"POS":400,"MAX":700,"MAG":2},
+               "REACH":{"PIN":13,"MIN":200,"POS":400,"MAX":600,"MAG":10},
+               "LIFT":{"PIN":14,"MIN":200,"POS":450,"MAX":700,"MAG":10},
+               "GRIP":{"PIN":15,"MIN":350,"POS":350,"MAX":450,"MAG":10}}    #SERVO MAP
               )   
 print Bogie
 
@@ -105,12 +108,13 @@ control.start()
 
 try:
     while True:
-        Bogie.update_drives(control.controlValues[0],      # Throttle
-                            control.controlValues[1])      # Direction
-        Bogie.update_servos(control.controlValues[2],      # Pivot
-                            control.controlValues[3],      # Reach
-                            control.controlValues[4],     # Lift / Dip
-                            control.controlValues[5])     # Grip / Claw
+        Bogie.update_drives(control.controlValues[0],       # Throttle
+                            control.controlValues[1])       # Direction
+        Bogie.update_servos(control.controlValues[2],       # Pivot
+                            control.controlValues[3],       # Reach
+                            control.controlValues[4],       # Dip
+                            control.controlValues[5],       # Lift
+                            control.controlValues[11])      # Grip
 
 except control.controlValues[12] == 1:
     Bogie.halt()
