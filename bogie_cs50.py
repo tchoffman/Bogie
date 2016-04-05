@@ -40,6 +40,7 @@ class Robot:
         return rep
 
     def halt(self):
+        print "HALT()"
         for key in self.drive:
             self.pwm.setPWM(self.drive[key],0,0)
         for key in self.servo:
@@ -48,12 +49,19 @@ class Robot:
     def update(self, event):
         ## Drive Motors
         if event.key in self.control["DRV"]:
-            
+            print "DRIVE"
         ## Pivot Arm
-        if event.key == "X2"
+        if event.key in self.control["PVT"]:
+            print "PIVOT"
         ## Reach Arm
+        if event.key in self.control["RCH"]:
+            print "REACH"
         ## Lift Arm
+        if event.key in self.control["LFT"]:
+            print "LIFT"
         ## Grip Arm
+        if event.key in self.control["GRP"]:
+            print "GRIP"
             
 ##
 ##
