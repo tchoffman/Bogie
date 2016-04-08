@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import RPi.GPIO as GPIO
 from lib.Adafruit_PWM_Servo_Driver import PWM
 from lib import xbox_read
 import time
@@ -113,46 +112,18 @@ class Robot:
             print "LIFT:  ", self.servo["LFT"]["POS"]
             self.pwm.setPWM(self.servo["LFT"]["PIN"],0,self.servo["LFT"]["POS"])
         
-        ## Grip Arm
         ## CLOSE GRIP    
         if event.key == "RB" and event.value == 1:
             print "CLOSE GRIP"
             self.servo["GRP"]["POS"] = self.servo["GRP"]["MAX"]
             self.pwm.setPWM(self.servo["GRP"]["PIN"],0,self.servo["GRP"]["POS"])
+
         ## OPEN GRIP
         if event.key == "LB" and event.value == 1:
             print "OPEN GRIP"
             self.servo["GRP"]["POS"] = self.servo["GRP"]["MIN"]
             self.pwm.setPWM(self.servo["GRP"]["PIN"],0,self.servo["GRP"]["POS"])
             
-            
-##            
-##        ## Update Pivot
-##        self.servo["PIVOT"]["POS"] -= int(pivot) * self.servo["PIVOT"]["MAG"]
-##        if self.servo["PIVOT"]["POS"] > self.servo["PIVOT"]["MAX"]:
-##            self.servo["PIVOT"]["POS"] = self.servo["PIVOT"]["MAX"]
-##        if self.servo["PIVOT"]["POS"] < self.servo["PIVOT"]["MIN"]:
-##            self.servo["PIVOT"]["POS"] = self.servo["PIVOT"]["MIN"]
-##        self.pwm.setPWM(self.servo["PIVOT"]["PIN"],0,self.servo["PIVOT"]["POS"])
-##
-##        ## Update REACH
-##        self.servo["REACH"]["POS"] -= int(reach) * self.servo["REACH"]["MAG"]
-##        if self.servo["REACH"]["POS"] > self.servo["REACH"]["MAX"]:
-##            self.servo["REACH"]["POS"] = self.servo["REACH"]["MAX"]
-##        if self.servo["REACH"]["POS"] < self.servo["REACH"]["MIN"]:
-##            self.servo["REACH"]["POS"] = self.servo["REACH"]["MIN"]
-##        self.pwm.setPWM(self.servo["REACH"]["PIN"],0,self.servo["REACH"]["POS"])
-##
-##        ## Update LIFT
-##        self.servo["LIFT"]["POS"] += int((lift - dip) * 100) 
-##        self.pwm.setPWM(self.servo["LIFT"]["PIN"],0,self.servo["LIFT"]["POS"])
-##
-##        ## Update GRIP
-##        if grip == 1:
-##            self.pwm.setPWM(self.servo["GRIP"]["PIN"],0,self.servo["GRIP"]["MIN"])
-##        if grip == 0:
-##            self.pwm.setPWM(self.servo["GRIP"]["PIN"],0,self.servo["GRIP"]["MAX"])
-
     def read_sensors(self, command):
         pass
     
