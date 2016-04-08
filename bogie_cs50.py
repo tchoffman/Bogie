@@ -88,6 +88,7 @@ class Robot:
         ## Pivot Arm
         if event.key == "X2":
             pivot = float(self.control["X2"]) / MAXJOYSTICK
+            pivot = -(pivot)
             pivot = pivot * self.servo["PVT"]["WIDTH"] / 2
             pivot = int(pivot) + self.servo["PVT"]["MID"]
             self.servo["PVT"]["POS"] = pivot
