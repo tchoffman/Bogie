@@ -92,7 +92,6 @@ class Robot:
             pivot = pivot * self.servo["PVT"]["WIDTH"] / 2
             pivot = int(pivot) + self.servo["PVT"]["MID"]
             self.servo["PVT"]["POS"] = pivot
-            print "PIVOT: ", self.servo["PVT"]["POS"]
             self.pwm.setPWM(self.servo["PVT"]["PIN"],0,self.servo["PVT"]["POS"])
             
         ## Reach Arm
@@ -101,7 +100,6 @@ class Robot:
             reach = reach * self.servo["RCH"]["WIDTH"] / 2
             reach = int(reach) + self.servo["PVT"]["MID"]
             self.servo["RCH"]["POS"] = reach
-            print "REACH: ", self.servo["RCH"]["POS"]
             self.pwm.setPWM(self.servo["RCH"]["PIN"],0,self.servo["RCH"]["POS"])
                           
         ## Lift Arm
@@ -110,18 +108,15 @@ class Robot:
             lift = lift * self.servo["LFT"]["WIDTH"] / 2
             lift = int(lift) + self.servo["LFT"]["MID"]
             self.servo["LFT"]["POS"] = lift
-            print "LIFT:  ", self.servo["LFT"]["POS"]
             self.pwm.setPWM(self.servo["LFT"]["PIN"],0,self.servo["LFT"]["POS"])
         
         ## CLOSE GRIP    
         if event.key == "RB" and event.value == 1:
-            print "CLOSE GRIP"
             self.servo["GRP"]["POS"] = self.servo["GRP"]["MAX"]
             self.pwm.setPWM(self.servo["GRP"]["PIN"],0,self.servo["GRP"]["POS"])
 
         ## OPEN GRIP
         if event.key == "LB" and event.value == 1:
-            print "OPEN GRIP"
             self.servo["GRP"]["POS"] = self.servo["GRP"]["MIN"]
             self.pwm.setPWM(self.servo["GRP"]["PIN"],0,self.servo["GRP"]["POS"])
             
@@ -138,7 +133,6 @@ servo_map = {"PVT":{"PIN":12,"MIN":135,"MID":405,"MAX":675,"MAG":1},            
 control_map = {"X1":0,"Y1":0,"X2":0,"Y2":0,"LT":0,"RT":0,"RB":0,"LB":0,"start":0,"guide":0,"back":0,
                "A":0,"B":0,"X":0,"Y":0,"dl":0,"dr":0,"du":0,"dd":0,"TL":0,"TR":0}
 Bogie = Robot(drive_map, sensor_map, servo_map, control_map)   
-print Bogie
 
 for event in xbox_read.event_stream(deadzone=12000):
     if event.key == "back" and event.value == 1:
