@@ -1,5 +1,5 @@
 # Bogie
-Bogie Rover code for Raspberry Pi
+The "Bogie Rover" is a robot built on the Bogie Runt Rover chassis from Actorobotics.  In this project I also mounted a small MeArm (laser cut from wood) onto the top of the rover.  The chassis comes with 6 motors and in this case they are controlled as 2 tracks (left and right).  The MeArm has 4 axes of rotation controlled by 4 small servo motors.  The brains of the Robot is a Raspberry Pi 2.  Tracks are controlled via Pulse width modulation which is converted into constant voltages by the PWM Servo Hat to control velocity of each track.  A small Xbox control receiver was modified to mount on the Bogie Rover and drivers were installed on the RPi.  Python scripts control the conversion of signals from the Xbox controller to the motors and servos.  In a simple rover, each joystick would control each track, but the existence of the MeArm required a mapping of the Left Joystick to control both tracks simultaneously with "intuitive" control.  For instance, Leftward pressure will result in ta left turn (L track full reverse, R track full forward).  Meanwhile, the right stick and triggers are used to control the 4 axes of the MeArm.
 
 ## Setup PWM Servo Hat
 
